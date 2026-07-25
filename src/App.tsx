@@ -1,11 +1,21 @@
-import content from '@/content/content'
+import { Routes, Route } from 'react-router-dom'
+import Layout from '@/components/Layout'
+import Home from '@/pages/Home'
+import Restaurace from '@/pages/Restaurace'
+import Pivovar from '@/pages/Pivovar'
+import Kontakt from '@/pages/Kontakt'
 
-// Kořenová komponenta aplikace – zatím prázdný shell připravený k naplnění.
+// Kořenová komponenta – definuje routy jednotlivých stránek uvnitř sdíleného Layoutu.
 function App() {
   return (
-    <main>
-      <h1>{content.app.name}</h1>
-    </main>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/restaurace" element={<Restaurace />} />
+        <Route path="/pivovar" element={<Pivovar />} />
+        <Route path="/kontakt" element={<Kontakt />} />
+      </Route>
+    </Routes>
   )
 }
 
