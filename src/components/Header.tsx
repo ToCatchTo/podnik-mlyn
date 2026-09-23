@@ -2,6 +2,7 @@ import Box from '@mui/material/Box'
 import ButtonBase from '@mui/material/ButtonBase'
 import { fluid } from '@/utils/fluid'
 import { text } from '@/theme/textStyles'
+import { hoverDarken } from '@/theme/interactions'
 import content from '@/content/content'
 
 // Hlavička – odkaz "menu" vpravo nahoře (otevírá rozbalené menu). Pozicovaná absolutně
@@ -22,16 +23,16 @@ export default function Header({ onOpenMenu }: HeaderProps) {
         zIndex: 10,
         display: 'flex',
         justifyContent: 'flex-end',
-        pt: fluid(90, 150),
-        pr: fluid(47, 275),
+        pt: fluid(74, 111),
+        pr: fluid(40, 280),
         pointerEvents: 'none', // klikací je jen samotný odkaz
       }}
     >
       <ButtonBase
         onClick={onOpenMenu}
         disableRipple
-        sx={{ ...text.navMenu, pointerEvents: 'auto', cursor: 'pointer' }}
-        aria-label={content.nav.menu}
+        sx={{ ...text.navMenu, ...hoverDarken(), pointerEvents: 'auto', cursor: 'pointer' }}
+        aria-label={content.nav.openMenu}
       >
         {content.nav.menu}
       </ButtonBase>

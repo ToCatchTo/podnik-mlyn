@@ -1,26 +1,27 @@
 // Centrální soubor se všemi statickými texty aplikace (přesně dle XD návrhu,
-// včetně placeholderů jako "00:00 - 00:00", "pronájem???", "Název piva").
+// včetně placeholderů jako "00:00 - 00:00", "Název piva", "12/2026").
 // V komponentách nepoužívej hardcoded texty – vždy je ber odsud.
+// Části označené "z BE" slouží zároveň jako fallback pro hooky v hooks/useContent.ts.
 
 export const content = {
-  // Obecné
   brand: {
-    name: 'MLÝN CHMEL',
-    tagline: 'restaurace · minipivovar',
+    name: 'Mlýn a chmel',
+    logoAlt: 'Sezemický pivovar Mlýn a chmel',
   },
 
   nav: {
     menu: 'menu',
+    openMenu: 'Otevřít menu',
+    closeMenu: 'Zavřít menu',
+    home: 'Domovská stránka',
   },
 
-  // Položky rozbaleného menu (v pořadí dle návrhu)
+  // Položky rozbaleného menu (v pořadí dle návrhu). 'lunchMenu' = externí PDF (odkaz z BE)
   menu: {
     items: [
-      { label: 'polední menu', to: '/restaurace' },
+      { label: 'polední menu', to: 'lunchMenu' },
       { label: 'restaurace', to: '/restaurace' },
       { label: 'pivovar', to: '/pivovar' },
-      { label: 'pronájem???', to: '/kontakt' },
-      { label: 'akce???', to: '/' },
       { label: 'rezervace', to: '/kontakt' },
       { label: 'kontakt', to: '/kontakt' },
     ],
@@ -29,9 +30,15 @@ export const content = {
   // Domovská stránka
   home: {
     links: [
-      { label: 'restaurace', to: '/restaurace' },
       { label: 'pivovar', to: '/pivovar' },
+      { label: 'restaurace', to: '/restaurace' },
     ],
+  },
+
+  // Lightbox s oznámením na domovské stránce (text z BE; prázdný = nezobrazí se)
+  lightbox: {
+    text: 'Plánované otevření\n12/2026',
+    close: 'Zavřít oznámení',
   },
 
   // Společný úvodní odstavec (restaurace i pivovar)
@@ -41,10 +48,14 @@ export const content = {
   // Restaurace
   restaurace: {
     heading: 'restaurace',
-    links: [
-      { label: 'polední menu', to: '/restaurace' },
-      { label: 'stálé menu', to: '/restaurace' },
-    ],
+    photoAlt: 'Kuchař při přípravě jídla',
+    lunchMenu: 'polední menu',
+    permanentMenu: 'stálé menu',
+    // Odkazy na PDF s menu (placeholdery; skutečné adresy přijdou z BE)
+    menuLinks: {
+      lunchMenuUrl: '#',
+      permanentMenuUrl: '#',
+    },
     contactLabel: 'rezervace / pronájem',
     phone: '+420 607 13 12 12',
     email: 'info@mlynachmel.cz',
@@ -53,12 +64,16 @@ export const content = {
   // Pivovar
   pivovar: {
     heading: 'řemeslný pivovar',
-    headingMobile: 'řemeslný\npivovar',
+    photoAlt: 'Měděné varní kotle pivovaru',
     offerLink: 'nabídka piva',
-    // 6 karet s pivem (placeholder obsah dle návrhu)
+    offerAnchor: 'nabidka',
+    currency: 'Kč',
+    // 6 karet s pivem (placeholder obsah dle návrhu; skutečná data z BE)
     beers: Array.from({ length: 6 }, () => ({
       name: 'Název piva',
-      desc: 'Krátká charakteristika piva na pár řádků. Krátká charakteristika piva na pár řádků.\n2-3 řádky textu o pivě.',
+      description: 'Krátká charakteristika piva na pár řádků. Krátká charakteristika piva na pár řádků.',
+      price: '99',
+      volume: '0,5l',
     })),
   },
 
@@ -73,6 +88,7 @@ export const content = {
       label: 'adresa',
       lines: ['Tyršovo náměstí 12', '533 04 Sezemice'],
     },
+    // Otevírací doba – placeholder, skutečná data z BE
     hours: {
       label: 'otevírací doba',
       lines: ['po-pá 00:00 - 00:00', 'sobota 00:00 - 00:00', 'neděle 00:00 - 00:00'],
@@ -93,7 +109,9 @@ export const content = {
   footer: {
     copyrightDesktop: 'tvoříme weby s radostí',
     copyrightMobile: 'copyright 2025, vytvoříme web i vám',
-    logo: 'matfix',
+    matfixAlt: 'matfix',
+    // Cílová adresa odkazu z patičky (placeholder)
+    matfixUrl: '#',
   },
 } as const
 

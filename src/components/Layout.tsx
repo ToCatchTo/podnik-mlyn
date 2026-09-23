@@ -4,9 +4,11 @@ import Box from '@mui/material/Box'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import MenuOverlay from '@/components/MenuOverlay'
-import { colors } from '@/theme/tokens'
+import { colors, layout } from '@/theme/tokens'
 
 // Sdílený layout všech stránek: zelené pozadí, hlavička (menu), obsah, patička a překryvné menu.
+// Obsah má min. výšku celého viewportu a spodní odsazení o výšku patičky; patička leží
+// absolutně přes spodní okraj stránky (HP se tak vejde přesně do okna bez scrollování).
 export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
@@ -14,7 +16,6 @@ export default function Layout() {
   return (
     <Box
       sx={{
-        minHeight: '100dvh',
         display: 'flex',
         flexDirection: 'column',
         bgcolor: colors.green,
@@ -24,8 +25,17 @@ export default function Layout() {
     >
       <Header onOpenMenu={() => setMenuOpen(true)} />
 
-      {/* Hlavní obsah – roste, aby patička byla u spodního okraje i na krátkých stránkách */}
-      <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      {/* Hlavní obsah – vyplní minimálně celý viewport, dole místo pro patičku */}
+      <Box
+        component="main"
+        sx={{
+          minHeight: '100dvh',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          pb: `${layout.footerHeight}px`,
+        }}
+      >
         <Outlet />
       </Box>
 

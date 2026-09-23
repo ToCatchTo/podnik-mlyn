@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-// Náhradní fonty (bundlované lokálně, ne z CDN)
-import '@fontsource/figtree/400.css'
-import '@fontsource/figtree/500.css'
+// Fonty bundlované lokálně (ne z CDN)
+import '@fontsource/bricolage-grotesque/400.css'
+import '@fontsource/bricolage-grotesque/500.css'
 import '@fontsource/inter/400.css'
 import App from '@/App'
 import theme from '@/theme/theme'

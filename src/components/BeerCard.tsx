@@ -3,16 +3,17 @@ import Typography from '@mui/material/Typography'
 import { fluid } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 import { text } from '@/theme/textStyles'
-import PhotoPlaceholder from '@/components/PhotoPlaceholder'
 
-// Karta jednoho piva – zaoblený zelený box s obrázkem lahve, názvem a popisem.
-// Rozměry a odsazení fluidně dle návrhu (mobil 153×309 → desktop 398×656).
+// Karta jednoho piva – zaoblený zelený box s obrázkem lahve, názvem, popisem a cenou.
+// Rozměry a odsazení fluidně dle návrhu (mobil 153×309 → desktop 398×680).
+// Popis roste (flexGrow), takže cena sedí u spodního okraje stejně ve všech kartách.
 interface BeerCardProps {
   name: string
-  desc: string
+  description: string
+  priceLabel: string
 }
 
-export default function BeerCard({ name, desc }: BeerCardProps) {
+export default function BeerCard({ name, description, priceLabel }: BeerCardProps) {
   return (
     <Box
       sx={{
@@ -20,7 +21,7 @@ export default function BeerCard({ name, desc }: BeerCardProps) {
         borderRadius: fluid(25, 55),
         pt: fluid(20, 51),
         px: fluid(16, 42),
-        pb: fluid(24, 55),
+        pb: fluid(14, 36),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -29,22 +30,26 @@ export default function BeerCard({ name, desc }: BeerCardProps) {
     >
       {/* Obrázek lahve (placeholder), poměr stran dle návrhu 315/410 */}
       <Box
+        component="img"
+        src="/images/beer_bottle.webp"
+        alt={name}
         sx={{
+          display: 'block',
           width: '100%',
           aspectRatio: '315 / 410',
+          objectFit: 'cover',
           borderRadius: fluid(15, 34),
-          overflow: 'hidden',
         }}
-      >
-        <PhotoPlaceholder label="lahev" />
-      </Box>
+      />
 
       <Typography component="h3" sx={{ ...text.beerName, mt: fluid(13, 19) }}>
         {name}
       </Typography>
-      <Typography sx={{ ...text.beerDesc, mt: fluid(6, 10), whiteSpace: 'pre-line' }}>
-        {desc}
+      {/* Popis je v návrhu o 13 px širší než lahev na každé straně (desktop) */}
+      <Typography sx={{ ...text.beerDesc, mt: fluid(8, 14), mx: fluid(0, -13), flexGrow: 1, whiteSpace: 'pre-line' }}>
+        {description}
       </Typography>
+      <Typography sx={{ ...text.beerName, mt: fluid(11, 17) }}>{priceLabel}</Typography>
     </Box>
   )
 }

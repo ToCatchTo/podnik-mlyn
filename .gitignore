@@ -30,6 +30,12 @@ pnpm-debug.log*
 .env
 .env.example
 
-# Interní / pomocné složky (viz instrukce)
+# Interní / pomocné složky a dokumentace (viz instrukce)
 docs
 superpowers
+DOC.md
+
+# Testy
+**/*.test.*
+**/*.spec.*
+__tests__

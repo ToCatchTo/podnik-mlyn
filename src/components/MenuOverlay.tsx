@@ -1,18 +1,18 @@
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import ButtonBase from '@mui/material/ButtonBase'
-import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
 import { fluid } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 import { text } from '@/theme/textStyles'
+import { hoverDarken } from '@/theme/interactions'
+import { useMenuLinks } from '@/hooks/useContent'
 import content from '@/content/content'
 
-// Rozbalené menu. Desktop: krémový panel vpravo (35,2 % šířky). Mobil: přes celou obrazovku.
-// Položky zelené na krémovém pozadí, zavírací křížek.
+// Rozbalené menu. Desktop: krémový panel vpravo (830 px z 1920, přes celou výšku vč. patičky).
+// Mobil: krémová plocha přes celou obrazovku, patička zůstává vidět.
 interface MenuOverlayProps {
   open: boolean
   onClose: () => void
@@ -22,29 +22,41 @@ export default function MenuOverlay({ open, onClose }: MenuOverlayProps) {
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
-  // Seznam položek menu (sdílený pro obě varianty)
+  // Odkaz na polední menu (PDF z BE)
+  const { data: menuLinks } = useMenuLinks()
+
+  // Seznam položek menu (sdílený pro obě varianty); 'lunchMenu' je externí PDF v novém okně
+  const itemSx = { ...text.menuItem, ...hoverDarken(), justifyContent: 'flex-start', cursor: 'pointer', width: 'fit-content' }
   const items = (
-    <Stack sx={{ gap: fluid(15, 23) }}>
-      {content.menu.items.map((item, i) => (
-        <ButtonBase
-          key={`${item.label}-${i}`}
-          component={Link}
-          to={item.to}
-          onClick={onClose}
-          disableRipple
-          sx={{ ...text.menuItem, justifyContent: 'flex-start', cursor: 'pointer', width: 'fit-content' }}
-        >
-          {item.label}
-        </ButtonBase>
-      ))}
+    <Stack sx={{ gap: fluid(13, 15) }}>
+      {content.menu.items.map((item, i) =>
+        item.to === 'lunchMenu' ? (
+          <ButtonBase
+            key={`${item.label}-${i}`}
+            component="a"
+            href={menuLinks.lunchMenuUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={onClose}
+            disableRipple
+            sx={itemSx}
+          >
+            {item.label}
+          </ButtonBase>
+        ) : (
+          <ButtonBase key={`${item.label}-${i}`} component={Link} to={item.to} onClick={onClose} disableRipple sx={itemSx}>
+            {item.label}
+          </ButtonBase>
+        ),
+      )}
     </Stack>
   )
 
-  // Zavírací křížek
+  // Zavírací křížek 50 × 50 (ikona z návrhu)
   const closeButton = (
-    <IconButton onClick={onClose} aria-label="Zavřít menu" sx={{ color: colors.green, p: 0 }}>
-      <CloseIcon sx={{ fontSize: fluid(40, 64) }} />
-    </IconButton>
+    <ButtonBase onClick={onClose} aria-label={content.nav.closeMenu} sx={{ ...hoverDarken(), width: 50, height: 50 }}>
+      <Box component="img" src="/icons/close.svg" alt="" sx={{ width: 50, height: 50 }} />
+    </ButtonBase>
   )
 
   // Společné pozadí přes celý viewport (kvůli plynulému fade a zachycení kliknutí mimo panel)
@@ -62,44 +74,56 @@ export default function MenuOverlay({ open, onClose }: MenuOverlayProps) {
         pointerEvents: open ? 'auto' : 'none',
       }}
       aria-hidden={!open}
+      onClick={onClose}
     >
       {isDesktop ? (
-        // DESKTOP: krémový panel vpravo
+        // DESKTOP: krémový panel vpravo, položky 175 px od levého okraje panelu (x = 1265), první 327 px shora.
+        // Šířka panelu je odvozená od pozice odkazů na HP (50vw + fluid(0,146), viz Home.tsx),
+        // aby je vždy zakryl a přesahoval ještě 40 px vlevo za ně (na 1920 = 854 px).
+        // Procenta u paddingu se počítají z šířky overlaye (ne panelu), proto vw.
         <Box
+          onClick={(e) => e.stopPropagation()}
           sx={{
             position: 'absolute',
             top: 0,
             right: 0,
             height: '100%',
-            width: '35.2%',
+            width: `max(320px, calc(50vw - ${fluid(0, 146)} + 40px))`,
             bgcolor: colors.cream,
             transform: open ? 'translateX(0)' : 'translateX(100%)',
             transition: 'transform 300ms ease-out',
-            pl: '20.4%', // vodorovně: % z šířky panelu (odpovídá návrhu)
-            pt: '32vh', // svisle: % z výšky viewportu
+            pl: 'clamp(70px, 9.115vw, 175px)',
+            pt: 'clamp(120px, 30.3vh, 327px)',
           }}
         >
           {items}
-          <Box sx={{ position: 'absolute', right: '14%', bottom: '16vh' }}>{closeButton}</Box>
+          <Box sx={{ position: 'absolute', left: '47%', top: 'min(853px, 79vh)' }}>{closeButton}</Box>
         </Box>
       ) : (
-        // MOBIL: krémový přes celou obrazovku (patička černá zůstává vidět dole)
+        // MOBIL: krémová plocha přes celou obrazovku, položky 68 px zleva, první 242 px shora, křížek na střed
         <Box
+          onClick={(e) => e.stopPropagation()}
           sx={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: fluid(40, 50),
+            inset: 0,
             bgcolor: colors.cream,
             opacity: open ? 1 : 0,
             transition: 'opacity 250ms ease-out',
-            pl: '17.4%', // vodorovně: % z šířky (odpovídá návrhu)
-            pt: '30vh', // svisle: % z výšky viewportu
+            pl: '68px',
+            pt: 'clamp(120px, 28.7vh, 242px)',
           }}
         >
           {items}
-          <Box sx={{ position: 'absolute', left: 0, right: 0, bottom: '20vh', display: 'flex', justifyContent: 'center' }}>
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 'min(689px, 81.6vh)',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             {closeButton}
           </Box>
         </Box>

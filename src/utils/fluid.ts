@@ -30,4 +30,9 @@ export function fluid(minPx: number, maxPx: number): string {
   return `clamp(${lower}px, calc(${round(interceptPx)}px + ${round(slopeVw)}vw), ${upper}px)`
 }
 
-export default fluid
+// Čistě proporční škálování pixelové hodnoty z návrhu (šířka 1920) podle šířky viewportu.
+// Na rozdíl od fluid() neinterpoluje k mobilní hodnotě – hodnota je vždy px × (šířka / 1920).
+// Např.: mt: vw(139) → 139px na 1920px, 104.25px na 1440px.
+export function vw(designPx: number): string {
+  return `${round((designPx / MAX_VIEWPORT) * 100)}vw`
+}

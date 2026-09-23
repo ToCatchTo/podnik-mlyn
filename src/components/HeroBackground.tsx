@@ -1,15 +1,42 @@
 import Box from '@mui/material/Box'
-import PhotoPlaceholder from '@/components/PhotoPlaceholder'
-import { colors } from '@/theme/tokens'
+import { fluid } from '@/utils/fluid'
 
-// Celoplošné fotopozadí s výrazným zeleným závojem (jako na HP / restaurace / pivovar v návrhu).
-// Placeholder fotky se doplní finální fotografií.
-export default function HeroBackground() {
+// Fotka interiéru v pozadí stránky: 31 % krytí, režim multiply na zeleném pozadí.
+// Výchozí výška = celý rodič (obsah stránky). Pivovar používá jen horní část dle návrhu
+// (mobil 844, desktop 1366), pod ní pokračuje čistě zelené pozadí s kartami.
+interface HeroBackgroundProps {
+  variant?: 'full' | 'top'
+}
+
+export default function HeroBackground({ variant = 'full' }: HeroBackgroundProps) {
   return (
-    <Box sx={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }} aria-hidden>
-      <PhotoPlaceholder label="" />
-      {/* Zelený závoj přes fotku */}
-      <Box sx={{ position: 'absolute', inset: 0, bgcolor: colors.green, opacity: 0.82 }} />
+    <Box
+      aria-hidden
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: variant === 'full' ? '100%' : fluid(844, 1366),
+        overflow: 'hidden',
+        zIndex: 0,
+        pointerEvents: 'none',
+      }}
+    >
+      <Box
+        component="img"
+        src="/images/hero_background.webp"
+        alt=""
+        sx={{
+          display: 'block',
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          opacity: 0.31,
+          mixBlendMode: 'multiply',
+        }}
+      />
     </Box>
   )
 }
