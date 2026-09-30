@@ -7,7 +7,9 @@ import ContactGroup from '@/components/ContactGroup'
 import { fluid, vw, fitHeight } from '@/utils/fluid'
 import { telHref, mailHref } from '@/utils/contactLinks'
 import { useMenuLinks } from '@/hooks/useContent'
+import Seo from '@/components/Seo'
 import { text } from '@/theme/textStyles'
+import { SEO } from '@/seo'
 import content from '@/content/content'
 
 // Stránka Restaurace – úvodní blok s fotkou, odkazy na menu a kontakt na rezervace.
@@ -16,6 +18,7 @@ export default function Restaurace() {
   const { data: menuLinks } = useMenuLinks()
   return (
     <Box sx={{ position: 'relative', flex: 1 }}>
+      <Seo path="/restaurace" title={SEO['/restaurace'].title} description={SEO['/restaurace'].description} />
       <HeroBackground />
 
       <IntroSection

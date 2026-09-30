@@ -6,7 +6,10 @@ import Logo from '@/components/Logo'
 import ArrowLink from '@/components/ArrowLink'
 import Lightbox from '@/components/Lightbox'
 import { vw } from '@/utils/fluid'
-import { text } from '@/theme/textStyles'
+import Seo from '@/components/Seo'
+import JsonLd from '@/components/JsonLd'
+import { text, visuallyHidden } from '@/theme/textStyles'
+import { SEO, localBusinessJsonLd } from '@/seo'
 import { useLightbox } from '@/hooks/useContent'
 import content from '@/content/content'
 
@@ -29,7 +32,13 @@ export default function Home() {
   const { data: lightbox } = useLightbox()
   return (
     <Box sx={{ position: 'relative', flex: 1, display: 'flex' }}>
+      <Seo path="/" description={SEO['/'].description} />
+      <JsonLd data={localBusinessJsonLd()} />
       <HeroBackground />
+      {/* Návrh na HP nadpis nemá (jen logo) – h1 je vizuálně skrytý */}
+      <Box component="h1" sx={visuallyHidden}>
+        {content.home.heading}
+      </Box>
 
       {/* alignContent: řádky se nesmí roztáhnout do volné výšky (obsah drží u horního okraje) */}
       <Grid container sx={{ position: 'relative', zIndex: 1, flex: 1, alignItems: 'flex-start', alignContent: 'flex-start' }}>

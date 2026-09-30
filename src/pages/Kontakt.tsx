@@ -6,6 +6,10 @@ import WaveDecor from '@/components/WaveDecor'
 import { fluid, vw } from '@/utils/fluid'
 import { telHref, mailHref } from '@/utils/contactLinks'
 import { useOpeningHours } from '@/hooks/useContent'
+import Seo from '@/components/Seo'
+import JsonLd from '@/components/JsonLd'
+import { visuallyHidden } from '@/theme/textStyles'
+import { SEO, localBusinessJsonLd } from '@/seo'
 import content from '@/content/content'
 
 // Stránka Kontakt – logo nahoře, pod ním dvousloupcový výpis kontaktních údajů (sloupce 552 px).
@@ -41,6 +45,8 @@ export default function Kontakt() {
   const { data: hours } = useOpeningHours()
   return (
     <Box sx={{ position: 'relative', flex: 1, overflow: 'hidden' }}>
+      <Seo path="/kontakt" title={SEO['/kontakt'].title} description={SEO['/kontakt'].description} />
+      <JsonLd data={localBusinessJsonLd()} />
       <WaveDecor
         variant="vertical"
         sx={{
@@ -63,6 +69,10 @@ export default function Kontakt() {
         }}
       >
         <Logo width={fluid(156, 196)} sx={{ mt: { xs: '74px', wide: vw(139) } }} />
+        {/* Návrh na stránce nadpis nemá – h1 je vizuálně skrytý */}
+        <Box component="h1" sx={visuallyHidden}>
+          {c.heading}
+        </Box>
 
         <Grid
           container

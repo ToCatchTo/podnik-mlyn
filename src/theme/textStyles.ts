@@ -104,3 +104,17 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
     color: colors.white,
   },
 }
+
+// Vizuálně skrytý prvek – není vidět, ale zůstává pro vyhledávače a čtečky obrazovky
+// (nadpisy h1/h2 na stránkách, kde je návrh nemá)
+export const visuallyHidden: SystemStyleObject<Theme> = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  margin: '-1px',
+  padding: 0,
+  border: 0,
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  whiteSpace: 'nowrap',
+}

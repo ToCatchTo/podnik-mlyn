@@ -27,8 +27,9 @@ export const content = {
     ],
   },
 
-  // Domovská stránka
+  // Domovská stránka (heading = vizuálně skrytý h1 pro vyhledávače a čtečky)
   home: {
+    heading: 'Mlýn a chmel – Sezemický pivovar a restaurace',
     links: [
       { label: 'pivovar', to: '/pivovar' },
       { label: 'restaurace', to: '/restaurace' },
@@ -77,8 +78,9 @@ export const content = {
     })),
   },
 
-  // Kontakt
+  // Kontakt (heading = vizuálně skrytý h1 pro vyhledávače a čtečky)
   kontakt: {
+    heading: 'Kontakt',
     reservation: {
       label: 'rezervace / pronájem',
       phone: '+420 607 13 12 12',

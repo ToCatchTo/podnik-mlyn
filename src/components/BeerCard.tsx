@@ -33,6 +33,8 @@ export default function BeerCard({ name, description, priceLabel }: BeerCardProp
         component="img"
         src="/images/beer_bottle.webp"
         alt={name}
+        loading="lazy"
+        decoding="async"
         sx={{
           display: 'block',
           width: '100%',

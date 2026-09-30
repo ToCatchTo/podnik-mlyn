@@ -4,7 +4,9 @@ import IntroSection from '@/components/IntroSection'
 import ArrowLink from '@/components/ArrowLink'
 import BeerCard from '@/components/BeerCard'
 import { vw } from '@/utils/fluid'
-import { text } from '@/theme/textStyles'
+import Seo from '@/components/Seo'
+import { text, visuallyHidden } from '@/theme/textStyles'
+import { SEO } from '@/seo'
 import { priceLabel } from '@/utils/format'
 import { useBeers } from '@/hooks/useContent'
 import content from '@/content/content'
@@ -22,6 +24,7 @@ export default function Pivovar() {
 
   return (
     <Box sx={{ position: 'relative', flex: 1 }}>
+      <Seo path="/pivovar" title={SEO['/pivovar'].title} description={SEO['/pivovar'].description} />
       <HeroBackground variant="top" />
 
       <IntroSection
@@ -53,6 +56,10 @@ export default function Pivovar() {
           pb: { xs: '218px', md: '140px', wide: vw(128) },
         }}
       >
+        {/* Vizuálně skrytý h2, aby názvy piv (h3) nenavazovaly přímo na h1 */}
+        <Box component="h2" sx={visuallyHidden}>
+          {c.offerLink}
+        </Box>
         <Box
           sx={{
             display: 'grid',
