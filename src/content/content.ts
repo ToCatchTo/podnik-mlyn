@@ -112,8 +112,8 @@ export const content = {
     copyrightDesktop: 'tvoříme weby s radostí',
     copyrightMobile: 'copyright 2025, vytvoříme web i vám',
     matfixAlt: 'matfix',
-    // Cílová adresa odkazu z patičky (placeholder)
-    matfixUrl: '#',
+    // Cílová adresa odkazu z patičky (otevírá se v novém okně)
+    matfixUrl: 'https://matfix.cz',
   },
 } as const
 
