@@ -1,9 +1,10 @@
 import Box from '@mui/material/Box'
-import { fluid } from '@/utils/fluid'
+import { vw } from '@/utils/fluid'
 
 // Fotka interiéru v pozadí stránky: 31 % krytí, režim multiply na zeleném pozadí.
-// Výchozí výška = celý rodič (obsah stránky). Pivovar používá jen horní část dle návrhu
-// (mobil 844, desktop 1366), pod ní pokračuje čistě zelené pozadí s kartami.
+// Výchozí výška = celý rodič (obsah stránky). Pivovar používá jen horní část dle návrhu:
+// mobil (do 'wide') 844 px, desktop úvodní blok na výšku okna + 286 px (1366 − 1080 z návrhu,
+// proporčně), pod ní pokračuje čistě zelené pozadí s kartami.
 interface HeroBackgroundProps {
   variant?: 'full' | 'top'
 }
@@ -17,7 +18,7 @@ export default function HeroBackground({ variant = 'full' }: HeroBackgroundProps
         top: 0,
         left: 0,
         right: 0,
-        height: variant === 'full' ? '100%' : fluid(844, 1366),
+        height: variant === 'full' ? '100%' : { xs: '844px', wide: `calc(100dvh + ${vw(286)})` },
         overflow: 'hidden',
         zIndex: 0,
         pointerEvents: 'none',

@@ -20,7 +20,7 @@ export default function Restaurace() {
 
       <IntroSection heading={c.heading} photoSrc="/images/restaurace_photo.webp" photoAlt={c.photoAlt}>
         {/* Odkazy na PDF s menu (nové okno), adresy z BE */}
-        <Stack sx={{ gap: { xs: '14px', md: vw(38) } }}>
+        <Stack sx={{ gap: { xs: '14px', wide: vw(38) } }}>
           <ArrowLink label={c.lunchMenu} to={menuLinks.lunchMenuUrl} external textSx={text.subLink} smallGap />
           <ArrowLink label={c.permanentMenu} to={menuLinks.permanentMenuUrl} external textSx={text.subLink} smallGap />
         </Stack>
@@ -34,7 +34,7 @@ export default function Restaurace() {
           ]}
           textSx={text.contactTextSmall}
           linesMt={fluid(20, 36)}
-          sx={{ mt: { xs: '216px', md: vw(137) }, pb: { xs: '90px', md: vw(81) } }}
+          sx={{ mt: { xs: '216px', md: '100px', wide: vw(137) }, pb: { xs: '90px', wide: vw(81) } }}
         />
       </IntroSection>
     </Box>

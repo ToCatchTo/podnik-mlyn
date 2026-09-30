@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import ButtonBase from '@mui/material/ButtonBase'
 import Typography from '@mui/material/Typography'
-import { fluid } from '@/utils/fluid'
+import { fluid, vw } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 import { text } from '@/theme/textStyles'
 import { hoverDarken } from '@/theme/interactions'
@@ -64,15 +64,16 @@ export default function Lightbox({ text: message }: LightboxProps) {
         pointerEvents: 'none',
       }}
     >
-      {/* Krémový box: mobil 328 × 508, desktop 1120 × 620, krytí 95 % */}
+      {/* Krémový box: mobil 328 × 508, desktop 1120 × 620 proporčně k šířce okna, s minimem
+          540 × 320 (text na dva řádky + křížek), nikdy širší než okno − 62. Krytí 95 % */}
       <Box
         role="dialog"
         aria-label={lines.join(' ')}
         sx={{
           position: 'relative',
           pointerEvents: 'auto',
-          width: { xs: 'calc(100% - 62px)', md: 'min(1120px, calc(100% - 62px))' },
-          height: fluid(508, 620),
+          width: { xs: 'calc(100% - 62px)', md: `min(max(540px, ${vw(1120)}), calc(100% - 62px))` },
+          height: { xs: '508px', md: `max(320px, ${vw(620)})` },
           bgcolor: colors.cream,
           opacity: 0.95,
           display: 'flex',
@@ -89,7 +90,8 @@ export default function Lightbox({ text: message }: LightboxProps) {
           ))}
         </Typography>
 
-        {/* Křížek: desktop vpravo nahoře (60 / 55 px), mobil dole na střed (34 px od spodku) */}
+        {/* Křížek: desktop vpravo nahoře (60 / 55 px proporčně, min. 20 px), mobil dole na střed
+            (34 px od spodku) */}
         <ButtonBase
           onClick={close}
           aria-label={content.lightbox.close}
@@ -98,8 +100,8 @@ export default function Lightbox({ text: message }: LightboxProps) {
             position: 'absolute',
             width: 50,
             height: 50,
-            top: { xs: 'calc(100% - 84px)', md: '60px' },
-            right: { xs: 'auto', md: '55px' },
+            top: { xs: 'calc(100% - 84px)', md: `max(20px, ${vw(60)})` },
+            right: { xs: 'auto', md: `max(20px, ${vw(55)})` },
             left: { xs: '50%', md: 'auto' },
             transform: { xs: 'translateX(-50%)', md: 'none' },
           }}

@@ -3,14 +3,38 @@ import Grid from '@mui/material/Grid2'
 import Logo from '@/components/Logo'
 import ContactGroup from '@/components/ContactGroup'
 import WaveDecor from '@/components/WaveDecor'
-import { fluid } from '@/utils/fluid'
+import { fluid, vw } from '@/utils/fluid'
 import { telHref, mailHref } from '@/utils/contactLinks'
 import { useOpeningHours } from '@/hooks/useContent'
 import content from '@/content/content'
 
 // Stránka Kontakt – logo nahoře, pod ním dvousloupcový výpis kontaktních údajů (sloupce 552 px).
-// Desktop: 2 sloupce (rezervace|adresa / otevírací doba|provozovatel), svislé vlny vlevo.
-// Mobil: jeden sloupec, svislé vlny vpravo.
+// Desktop (od 'wide', 900px): 2 sloupce (rezervace|adresa / otevírací doba|provozovatel), svislé
+// vlny vlevo, geometrie proporčně k šířce okna (vw). Pod 900px mobilní verze: jeden sloupec,
+// svislé vlny vpravo, pevné hodnoty.
+
+// Šířka obsahového bloku (logo + kontakty) z návrhu a jeho levé odsazení
+const BLOCK_WIDTH = 1104
+const DESIGN_PL = 554
+const WIDE_BREAKPOINT = 900
+const DESIGN_WIDTH = 1920
+
+// Levé odsazení bloku na desktopu: na 900 px je blok vycentrovaný, s rostoucí šířkou okna
+// lineárně odjíždí doleva a na 1920 px dosáhne pozice z návrhu (554 px); nad 1920 už drží
+// proporčně (vw(554)). Přímka px = slope · šířka + intercept vedená body
+// (900, centrovaný offset) a (1920, 554); min() ji nad 1920 zastaví na proporční hodnotě.
+const centeredPlAtWide = (WIDE_BREAKPOINT - (BLOCK_WIDTH / DESIGN_WIDTH) * WIDE_BREAKPOINT) / 2
+const plSlope = (DESIGN_PL - centeredPlAtWide) / (DESIGN_WIDTH - WIDE_BREAKPOINT)
+const plIntercept = DESIGN_PL - plSlope * DESIGN_WIDTH
+const round = (n: number) => Math.round(n * 1000) / 1000
+const desktopPl = `min(calc(${round(plSlope * 100)}vw + ${round(plIntercept)}px), ${vw(DESIGN_PL)})`
+
+// Mobil (pod 900 px): blok široký 318 px (z návrhu 390) je vycentrovaný; při zužování okna
+// mu levé odsazení klesá, až se na 36 px (návrh 390) zastaví.
+const MOBILE_BLOCK_WIDTH = 318
+const MOBILE_PL = 36
+const mobilePl = `max(${MOBILE_PL}px, calc(50vw - ${MOBILE_BLOCK_WIDTH / 2}px))`
+
 export default function Kontakt() {
   const c = content.kontakt
   // Otevírací doba z BE (fallback content.ts)
@@ -22,19 +46,31 @@ export default function Kontakt() {
         sx={{
           position: 'absolute',
           zIndex: 0,
-          width: fluid(116, 252),
-          top: { xs: '474px', md: '-6px' },
-          left: { xs: 'auto', md: fluid(0, 130) },
-          right: { xs: '-4px', md: 'auto' },
+          width: { xs: '116px', wide: vw(252) },
+          top: { xs: '474px', wide: '-6px' },
+          left: { xs: 'auto', wide: vw(130) },
+          right: { xs: '-4px', wide: 'auto' },
         }}
       />
 
-      <Box sx={{ position: 'relative', zIndex: 1, pl: fluid(36, 554), pr: fluid(36, 262), pb: fluid(94, 140) }}>
-        <Logo width={fluid(156, 196)} sx={{ mt: fluid(74, 139) }} />
+      <Box
+        sx={{
+          position: 'relative',
+          zIndex: 1,
+          pl: { xs: mobilePl, wide: desktopPl },
+          pr: { xs: '36px', wide: '36px' },
+          pb: { xs: '94px', wide: vw(140) },
+        }}
+      >
+        <Logo width={fluid(156, 196)} sx={{ mt: { xs: '74px', wide: vw(139) } }} />
 
-        <Grid container rowSpacing={fluid(55, 108)} sx={{ mt: fluid(63, 121), maxWidth: fluid(318, 1104) }}>
+        <Grid
+          container
+          rowSpacing={{ xs: '55px', wide: vw(108) }}
+          sx={{ mt: { xs: '63px', wide: vw(121) }, maxWidth: { xs: `${MOBILE_BLOCK_WIDTH}px`, wide: vw(BLOCK_WIDTH) } }}
+        >
           {/* Pořadí odpovídá mobilnímu layoutu; na desktopu řádkové plnění vytvoří 2 sloupce */}
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, wide: 6 }}>
             <ContactGroup
               label={c.reservation.label}
               lines={[
@@ -43,13 +79,13 @@ export default function Kontakt() {
               ]}
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, wide: 6 }}>
             <ContactGroup label={c.address.label} lines={c.address.lines} />
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, wide: 6 }}>
             <ContactGroup label={c.hours.label} lines={hours.lines} />
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, wide: 6 }}>
             <ContactGroup label={c.operator.label} lines={c.operator.lines} variant="small" />
           </Grid>
         </Grid>

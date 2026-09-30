@@ -3,8 +3,10 @@ import type { SystemStyleObject } from '@mui/system'
 import { fluid } from '@/utils/fluid'
 import { colors, fonts } from '@/theme/tokens'
 
-// Textové styly odvozené z XD návrhu. Velikost i line-height (px) jsou fluidní
-// mezi mobilní (390px) a desktopovou (1920px) hodnotou z návrhu.
+// Textové styly odvozené z XD návrhu. Velikost i line-height (px) jsou fluidní:
+// do 600px mobilní hodnota z návrhu (390), od 600 do 1920px plynule k desktopové.
+// Kde je mobilní hodnota pro úzký desktop (600px) příliš velká, má desktop vlastní menší
+// minimum přes { xs, md }.
 const base = { fontFamily: fonts.heading, fontWeight: 400, color: colors.cream } as const
 
 export const text: Record<string, SystemStyleObject<Theme>> = {
@@ -17,11 +19,12 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
     textUnderlineOffset: fluid(3, 6),
     textDecorationThickness: fluid(1, 2),
   },
-  // Velké odkazy na HP (restaurace / pivovar) 40/48 → 72/86
+  // Velké odkazy na HP (restaurace / pivovar) 40/48 → 72/86; úzký desktop začíná na 34/41,
+  // aby se "restaurace →" vešlo do pravé poloviny okna
   hpLink: {
     ...base,
-    fontSize: fluid(40, 72),
-    lineHeight: fluid(48, 86),
+    fontSize: { xs: '40px', md: fluid(34, 72) },
+    lineHeight: { xs: '48px', md: fluid(41, 86) },
   },
   // Nadpis sekce (restaurace / řemeslný pivovar) 40/48 → 39/47, medium
   sectionHeading: {
@@ -36,11 +39,12 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
     fontSize: fluid(20, 30),
     lineHeight: fluid(24, 36),
   },
-  // Pod-odkazy (polední menu, stálé menu, nabídka piva) 40/48 na obou
+  // Pod-odkazy (polední menu, stálé menu, nabídka piva) 40/48 na obou; desktop (od 'wide')
+  // začíná na 30/36, aby se vešly do levého sloupce na jeden řádek
   subLink: {
     ...base,
-    fontSize: '40px',
-    lineHeight: '48px',
+    fontSize: { xs: '40px', wide: fluid(30, 40) },
+    lineHeight: { xs: '48px', wide: fluid(36, 48) },
   },
   // Kontaktní údaje na stránce Kontakt (popisek i hodnota) 20/24 → 33/40
   contactText: {

@@ -13,8 +13,8 @@ import content from '@/content/content'
 // Emblém a obě vlny jsou tři SVG soubory se shodným viewBoxem, takže leží přesně na sobě.
 // Při prefers-reduced-motion je logo statické.
 interface LogoProps {
-  // Šířka (px nebo clamp() z fluid())
-  width: string
+  // Šířka (px / clamp() z fluid(), případně responzivně per breakpoint)
+  width: string | Partial<Record<'xs' | 'md', string>>
   animated?: boolean
   linkToHome?: boolean
   sx?: SxProps<Theme>

@@ -17,9 +17,9 @@ export const fonts = {
   small: '"Inter", system-ui, sans-serif',
 } as const
 
-// Referenční šířky viewportu odpovídají artboardům v návrhu (mobil 390, desktop 1920)
-// a shodují se s konstantami ve fluid.ts.
-export const REF = { mobile: 390, desktop: 1920 } as const
+// Referenční šířky viewportu odpovídají artboardům v návrhu (mobil 390, desktop 1920).
+// Desktopový layout začíná na 600px (breakpoint 'md' v theme.ts, MIN_VIEWPORT ve fluid.ts).
+export const REF = { mobile: 390, desktopMin: 600, desktop: 1920 } as const
 
 // Společné rozměry layoutu (px z návrhu)
 export const layout = {

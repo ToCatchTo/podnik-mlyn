@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box'
 import ButtonBase from '@mui/material/ButtonBase'
-import { fluid } from '@/utils/fluid'
+import { vw } from '@/utils/fluid'
 import { text } from '@/theme/textStyles'
 import { hoverDarken } from '@/theme/interactions'
 import content from '@/content/content'
 
 // Hlavička – odkaz "menu" vpravo nahoře (otevírá rozbalené menu). Pozicovaná absolutně
-// přes obsah stránky. Odsazení shora/vpravo fluidně dle návrhu (mobil 390 → desktop 1920).
+// přes obsah stránky. Odsazení shora/vpravo: mobil pevně dle návrhu 390, desktop proporčně (vw).
 interface HeaderProps {
   onOpenMenu: () => void
 }
@@ -23,8 +23,8 @@ export default function Header({ onOpenMenu }: HeaderProps) {
         zIndex: 10,
         display: 'flex',
         justifyContent: 'flex-end',
-        pt: fluid(74, 111),
-        pr: fluid(40, 280),
+        pt: { xs: '74px', md: vw(111) },
+        pr: { xs: '40px', md: vw(280) },
         pointerEvents: 'none', // klikací je jen samotný odkaz
       }}
     >

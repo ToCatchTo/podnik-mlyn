@@ -4,7 +4,7 @@ import ButtonBase from '@mui/material/ButtonBase'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
-import { fluid } from '@/utils/fluid'
+import { fluid, vw } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 import { text } from '@/theme/textStyles'
 import { hoverDarken } from '@/theme/interactions'
@@ -78,7 +78,7 @@ export default function MenuOverlay({ open, onClose }: MenuOverlayProps) {
     >
       {isDesktop ? (
         // DESKTOP: krémový panel vpravo, položky 175 px od levého okraje panelu (x = 1265), první 327 px shora.
-        // Šířka panelu je odvozená od pozice odkazů na HP (50vw + fluid(0,146), viz Home.tsx),
+        // Šířka panelu je odvozená od pozice odkazů na HP (50vw + vw(146), viz Home.tsx),
         // aby je vždy zakryl a přesahoval ještě 40 px vlevo za ně (na 1920 = 854 px).
         // Procenta u paddingu se počítají z šířky overlaye (ne panelu), proto vw.
         <Box
@@ -88,7 +88,7 @@ export default function MenuOverlay({ open, onClose }: MenuOverlayProps) {
             top: 0,
             right: 0,
             height: '100%',
-            width: `max(320px, calc(50vw - ${fluid(0, 146)} + 40px))`,
+            width: `max(320px, calc(50vw - ${vw(146)} + 40px))`,
             bgcolor: colors.cream,
             transform: open ? 'translateX(0)' : 'translateX(100%)',
             transition: 'transform 300ms ease-out',
