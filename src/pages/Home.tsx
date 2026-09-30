@@ -12,9 +12,19 @@ import content from '@/content/content'
 
 // Domovská stránka – hero s velkým logem a odkazy restaurace/pivovar + oznámení (lightbox).
 // Desktop: logo vlevo (347/252), odkazy vpravo (1106/527), geometrie proporčně k šířce (vw).
-// Mobil: logo nahoře, odkazy pod ním, pevné hodnoty z návrhu 390.
-// Stránka se musí vejít do okna bez scrollování, proto jsou svislé hodnoty omezené i podílem
-// výšky viewportu (poměry z návrhu 1080 / 844 px).
+// Mobil: logo nahoře, odkazy pod ním, pevné hodnoty z návrhu 390. V okně širším než návrh
+// (390–599 px) je blok logo + odkazy vycentrovaný; menu v hlavičce zůstává vpravo.
+// Stránka se má vejít do okna bez scrollování, proto jsou svislé hodnoty omezené i podílem
+// výšky viewportu (poměry z návrhu 1080 / 844 px). Na mobilu má ale přednost mezera 80 px
+// mezi odkazy a patičkou – když se do okna nevejde, stránka se o chybějící kus scrolluje.
+
+// Mobilní šířka loga (omezená i výškou okna) = šířka vycentrovaného bloku obsahu
+const MOBILE_LOGO_WIDTH = 'min(321px, 50dvh)'
+// Levé odsazení mobilního bloku: vycentrovaný na šířku loga, nejméně však odsazení z návrhu
+// (na 390 px vychází přesně návrh). Odkazy jsou dle návrhu o 1 px víc vpravo než logo.
+const mobilePl = (designPx: number) =>
+  `max(${designPx}px, calc(50vw - ${MOBILE_LOGO_WIDTH} / 2 + ${designPx - 35}px))`
+
 export default function Home() {
   const { data: lightbox } = useLightbox()
   return (
@@ -26,17 +36,19 @@ export default function Home() {
         {/* Logo: shora 204/844 → 252/1080, výška loga 374/844 → 629/1080 (šířka = výška × 540/629) */}
         <Grid
           size={{ xs: 12, md: 6 }}
-          sx={{ pl: { xs: '35px', md: vw(347) }, pt: { xs: 'min(204px, 23.3dvh)', md: `min(${vw(252)}, 23.3dvh)` } }}
+          sx={{ pl: { xs: mobilePl(35), md: vw(347) }, pt: { xs: 'min(204px, 23.3dvh)', md: `min(${vw(252)}, 23.3dvh)` } }}
         >
-          <Logo width={{ xs: 'min(321px, 50dvh)', md: `min(${vw(540)}, 50dvh)` }} animated linkToHome={false} />
+          <Logo width={{ xs: MOBILE_LOGO_WIDTH, md: `min(${vw(540)}, 50dvh)` }} animated linkToHome={false} />
         </Grid>
 
-        {/* Odkazy: mobil 76 px pod logem (9 % výšky), desktop 529/1080 shora */}
+        {/* Odkazy: mobil 76 px pod logem (9 % výšky) a 80 px nad patičkou, desktop 529/1080 shora */}
         <Grid
           size={{ xs: 12, md: 6 }}
           sx={{
-            pl: { xs: '36px', md: vw(146) },
+            pl: { xs: mobilePl(36), md: vw(146) },
             pt: { xs: 'min(76px, 9dvh)', md: `min(${vw(529)}, 49dvh)` },
+            // Mobil: mezera mezi posledním odkazem a patičkou
+            pb: { xs: '80px', md: 0 },
           }}
         >
           <Stack sx={{ gap: { xs: '15px', md: vw(18) } }}>

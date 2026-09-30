@@ -1,12 +1,14 @@
 import type { Theme } from '@mui/material/styles'
 import type { SystemStyleObject } from '@mui/system'
-import { fluid } from '@/utils/fluid'
+import { fluid, fitHeight } from '@/utils/fluid'
 import { colors, fonts } from '@/theme/tokens'
 
 // Textové styly odvozené z XD návrhu. Velikost i line-height (px) jsou fluidní:
 // do 600px mobilní hodnota z návrhu (390), od 600 do 1920px plynule k desktopové.
 // Kde je mobilní hodnota pro úzký desktop (600px) příliš velká, má desktop vlastní menší
 // minimum přes { xs, md }.
+// Texty úvodního bloku stránek Restaurace a Pivovar se na desktopu (od 'wide') zmenšují
+// i podle výšky okna (fitHeight), aby se blok včetně odkazů vešel na první obrazovku.
 const base = { fontFamily: fonts.heading, fontWeight: 400, color: colors.cream } as const
 
 export const text: Record<string, SystemStyleObject<Theme>> = {
@@ -30,21 +32,21 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
   sectionHeading: {
     ...base,
     fontWeight: 500,
-    fontSize: fluid(40, 39),
-    lineHeight: fluid(48, 47),
+    fontSize: { xs: fluid(40, 39), wide: fitHeight(fluid(40, 39), 39, 24) },
+    lineHeight: { xs: fluid(48, 47), wide: fitHeight(fluid(48, 47), 47, 29) },
   },
   // Úvodní odstavec 20/24 → 30/36
   intro: {
     ...base,
-    fontSize: fluid(20, 30),
-    lineHeight: fluid(24, 36),
+    fontSize: { xs: fluid(20, 30), wide: fitHeight(fluid(20, 30), 30, 15) },
+    lineHeight: { xs: fluid(24, 36), wide: fitHeight(fluid(24, 36), 36, 18) },
   },
   // Pod-odkazy (polední menu, stálé menu, nabídka piva) 40/48 na obou; desktop (od 'wide')
   // začíná na 30/36, aby se vešly do levého sloupce na jeden řádek
   subLink: {
     ...base,
-    fontSize: { xs: '40px', wide: fluid(30, 40) },
-    lineHeight: { xs: '48px', wide: fluid(36, 48) },
+    fontSize: { xs: '40px', wide: fitHeight(fluid(30, 40), 40, 22) },
+    lineHeight: { xs: '48px', wide: fitHeight(fluid(36, 48), 48, 26.4) },
   },
   // Kontaktní údaje na stránce Kontakt (popisek i hodnota) 20/24 → 33/40
   contactText: {
@@ -55,8 +57,8 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
   // Kontaktní údaje na stránce Restaurace 20/24 → 30/36
   contactTextSmall: {
     ...base,
-    fontSize: fluid(20, 30),
-    lineHeight: fluid(24, 36),
+    fontSize: { xs: fluid(20, 30), wide: fitHeight(fluid(20, 30), 30, 15) },
+    lineHeight: { xs: fluid(24, 36), wide: fitHeight(fluid(24, 36), 36, 18) },
   },
   // Drobný text provozovatele 9/10 → 16/19
   operatorSmall: {

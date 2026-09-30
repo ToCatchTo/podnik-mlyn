@@ -14,7 +14,7 @@ import content from '@/content/content'
 // Při prefers-reduced-motion je logo statické.
 interface LogoProps {
   // Šířka (px / clamp() z fluid(), případně responzivně per breakpoint)
-  width: string | Partial<Record<'xs' | 'md', string>>
+  width: string | Partial<Record<'xs' | 'md' | 'wide', string>>
   animated?: boolean
   linkToHome?: boolean
   sx?: SxProps<Theme>

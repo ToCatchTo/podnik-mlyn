@@ -11,6 +11,8 @@
 // 'md' v theme.ts), MAX_VIEWPORT je šířka desktopového návrhu.
 const MIN_VIEWPORT = 600
 const MAX_VIEWPORT = 1920
+// Výška desktopového návrhu (artboard 1920 × 1080)
+const DESIGN_HEIGHT = 1080
 
 // Zaokrouhlení na 3 desetinná místa, ať v CSS nejsou zbytečně dlouhá čísla
 const round = (n: number) => Math.round(n * 1000) / 1000
@@ -41,4 +43,14 @@ export function vw(designPx: number): string {
   const proportional = `${round((designPx / MAX_VIEWPORT) * 100)}vw`
   // U záporné hodnoty je "strop" z pohledu čísla naopak dolní mez
   return designPx > 0 ? `min(${proportional}, ${designPx}px)` : `max(${proportional}, ${designPx}px)`
+}
+
+// Omezení hodnoty i výškou okna: value (např. z fluid() / vw()) platí, dokud je okno dost vysoké;
+// v nižším okně se hodnota zmenšuje proporčně k výšce vůči návrhu (designPx × výška / 1080).
+// Používá úvodní blok stránek Restaurace a Pivovar, aby se celý vešel na první obrazovku.
+// minPx = spodní mez (čitelnost písma), pod kterou hodnota neklesne.
+// Např.: fitHeight(fluid(20, 30), 30, 16) → 30px na 1920×1080, 20.3px při výšce okna 730px.
+export function fitHeight(value: string, designPx: number, minPx?: number): string {
+  const fitted = `min(${value}, ${round((designPx / DESIGN_HEIGHT) * 100)}dvh)`
+  return minPx === undefined ? fitted : `max(${minPx}px, ${fitted})`
 }

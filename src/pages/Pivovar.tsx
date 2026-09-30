@@ -24,15 +24,20 @@ export default function Pivovar() {
     <Box sx={{ position: 'relative', flex: 1 }}>
       <HeroBackground variant="top" />
 
-      <IntroSection heading={c.heading} photoSrc="/images/pivovar_photo.webp" photoAlt={c.photoAlt}>
-        <ArrowLink
-          label={c.offerLink}
-          to={`#${c.offerAnchor}`}
-          direction="down"
-          textSx={text.subLink}
-          onClick={scrollToOffer}
-        />
-      </IntroSection>
+      <IntroSection
+        heading={c.heading}
+        photoSrc="/images/pivovar_photo.webp"
+        photoAlt={c.photoAlt}
+        links={
+          <ArrowLink
+            label={c.offerLink}
+            to={`#${c.offerAnchor}`}
+            direction="down"
+            textSx={text.subLink}
+            onClick={scrollToOffer}
+          />
+        }
+      />
 
       {/* Nabídka piva – karty: mobil 2 sloupce (mezera 11), od 600 px 3 sloupce; hybrid (600–899)
           v bloku max. 600 px na střed (stejně jako úvodní text), desktop mezera 85 proporčně.

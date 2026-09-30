@@ -16,7 +16,8 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider theme={theme}>
       {/* CssBaseline sjednotí výchozí styly napříč prohlížeči */}
       <CssBaseline />
-      <BrowserRouter>
+      {/* future: chování React Routeru v7 zapnuté předem (bez varování v konzoli) */}
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <App />
       </BrowserRouter>
     </ThemeProvider>
