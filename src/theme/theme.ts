@@ -26,6 +26,15 @@ const theme = createTheme({
     // 'wide' (900px) = pozdější přepnutí pro stránky s fotkou vedle textu.
     values: { xs: 0, sm: 600, md: 600, wide: 900, lg: 1200, xl: 1536 },
   },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        // Svislý scrollbar je zobrazený vždy: HP se vejde do okna bez scrollování, ostatní stránky ne.
+        // Bez toho by se při přechodu z HP objevil scrollbar, zúžil stránku a obsah (tlačítko menu) by uskočil.
+        html: { overflowY: 'scroll' },
+      },
+    },
+  },
 })
 
 export default theme
