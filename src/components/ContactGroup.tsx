@@ -10,7 +10,7 @@ import { hoverDarken } from '@/theme/interactions'
 export type ContactLine = string | { label: string; href: string }
 
 // Skupina kontaktní informace: popisek (label) + jeden či více řádků hodnoty.
-// Varianta 'small' použije drobné písmo (provozovatel).
+// Varianta 'small' použije drobné písmo tenčího řezu (provozovatel); popisek zůstává běžný.
 interface ContactGroupProps {
   label: string
   lines: readonly ContactLine[]

@@ -3,7 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-// Fonty bundlované lokálně (ne z CDN)
+// Fonty bundlované lokálně (ne z CDN). Bricolage Grotesque: 200 (extra light), 300 (light),
+// 400 (regular), 500 (medium). Soubor řezu se stahuje, až když je řez na stránce použitý.
+import '@fontsource/bricolage-grotesque/200.css'
+import '@fontsource/bricolage-grotesque/300.css'
 import '@fontsource/bricolage-grotesque/400.css'
 import '@fontsource/bricolage-grotesque/500.css'
 import '@fontsource/inter/400.css'

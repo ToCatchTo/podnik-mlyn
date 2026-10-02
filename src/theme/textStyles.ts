@@ -35,9 +35,10 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
     fontSize: { xs: fluid(40, 39), wide: fitHeight(fluid(40, 39), 39, 24) },
     lineHeight: { xs: fluid(48, 47), wide: fitHeight(fluid(48, 47), 47, 29) },
   },
-  // Úvodní odstavec 20/24 → 30/36
+  // Úvodní odstavec (perex) 20/24 → 30/36, light
   intro: {
     ...base,
+    fontWeight: 300,
     fontSize: { xs: fluid(20, 30), wide: fitHeight(fluid(20, 30), 30, 15) },
     lineHeight: { xs: fluid(24, 36), wide: fitHeight(fluid(24, 36), 36, 18) },
   },
@@ -60,9 +61,10 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
     fontSize: { xs: fluid(20, 30), wide: fitHeight(fluid(20, 30), 30, 15) },
     lineHeight: { xs: fluid(24, 36), wide: fitHeight(fluid(24, 36), 36, 18) },
   },
-  // Drobný text provozovatele 9/10 → 16/19
+  // Drobný text provozovatele 9/10 → 16/19, light (popisek sekce má běžnou váhu jako ostatní)
   operatorSmall: {
     ...base,
+    fontWeight: 300,
     fontSize: fluid(9, 16),
     lineHeight: fluid(10, 19),
   },
