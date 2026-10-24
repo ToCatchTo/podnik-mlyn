@@ -13,17 +13,20 @@ import { SEO } from '@/seo'
 import content from '@/content/content'
 
 // Stránka Restaurace – úvodní blok s fotkou, odkazy na menu a kontakt na rezervace.
+// Fotka stránky – zatím stejná v pozadí i jako ostrá v úvodním bloku
+const PHOTO_SRC = '/images/restaurace_photo.webp'
+
 export default function Restaurace() {
   const c = content.restaurace
   const { data: menuLinks } = useMenuLinks()
   return (
     <Box sx={{ position: 'relative', flex: 1 }}>
       <Seo path="/restaurace" title={SEO['/restaurace'].title} description={SEO['/restaurace'].description} />
-      <HeroBackground />
+      <HeroBackground src={PHOTO_SRC} />
 
       <IntroSection
         heading={c.heading}
-        photoSrc="/images/restaurace_photo.webp"
+        photoSrc={PHOTO_SRC}
         photoAlt={c.photoAlt}
         // Odkazy na PDF s menu (nové okno), adresy z BE; na desktopu vždy na první obrazovce.
         // Mezera mezi nimi je na desktopu omezená i výškou okna.

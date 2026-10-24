@@ -13,6 +13,9 @@ import content from '@/content/content'
 
 // Stránka Pivovar – úvodní blok s fotkou a odkaz "nabídka piva", pod ním mřížka karet s pivem
 // (mobil 2 sloupce, desktop 3 sloupce). Karty se načítají z BE (fallback content.ts).
+// Fotka stránky – zatím stejná v pozadí i jako ostrá v úvodním bloku
+const PHOTO_SRC = '/images/pivovar_photo.webp'
+
 export default function Pivovar() {
   const c = content.pivovar
   const { data: beers } = useBeers()
@@ -25,11 +28,11 @@ export default function Pivovar() {
   return (
     <Box sx={{ position: 'relative', flex: 1 }}>
       <Seo path="/pivovar" title={SEO['/pivovar'].title} description={SEO['/pivovar'].description} />
-      <HeroBackground variant="top" />
+      <HeroBackground variant="top" src={PHOTO_SRC} />
 
       <IntroSection
         heading={c.heading}
-        photoSrc="/images/pivovar_photo.webp"
+        photoSrc={PHOTO_SRC}
         photoAlt={c.photoAlt}
         links={
           <ArrowLink

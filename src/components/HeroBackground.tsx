@@ -3,7 +3,9 @@ import { alpha } from '@mui/material/styles'
 import { vw } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 
-// Fotka interiéru v pozadí stránky: 31 % krytí, režim multiply na zeleném pozadí.
+// Fotka v pozadí stránky: 31 % krytí, režim multiply na zeleném pozadí.
+// Výchozí fotka je interiér (HP); Restaurace a Pivovar si předávají vlastní fotku (src) – zatím
+// stejnou, jakou mají v úvodním bloku jako ostrou prezentační.
 // Přes fotku leží ještě poloprůhledná vrstva tmavší zelené (OVERLAY_OPACITY), která pozadí
 // ztmaví a fotku utlumí – sílu ztmavení řídí jen tato konstanta.
 // Výchozí výška = celý rodič (obsah stránky). Pivovar používá jen horní část dle návrhu:
@@ -11,7 +13,10 @@ import { colors } from '@/theme/tokens'
 // proporčně), pod ní pokračuje čistě zelené pozadí s kartami.
 interface HeroBackgroundProps {
   variant?: 'full' | 'top'
+  src?: string
 }
+
+const DEFAULT_SRC = '/images/hero_background.webp'
 
 // Krytí tmavě zelené vrstvy přes fotku (0 = bez ztmavení, vyšší = tmavší pozadí)
 const OVERLAY_OPACITY = 0.3
@@ -20,7 +25,7 @@ const overlayColor = alpha(colors.cardGreen, OVERLAY_OPACITY)
 // ostrý přechod do čistě zeleného pozadí
 const OVERLAY_FADE = '200px'
 
-export default function HeroBackground({ variant = 'full' }: HeroBackgroundProps) {
+export default function HeroBackground({ variant = 'full', src = DEFAULT_SRC }: HeroBackgroundProps) {
   return (
     <Box
       aria-hidden
@@ -37,7 +42,7 @@ export default function HeroBackground({ variant = 'full' }: HeroBackgroundProps
     >
       <Box
         component="img"
-        src="/images/hero_background.webp"
+        src={src}
         alt=""
         sx={{
           display: 'block',
