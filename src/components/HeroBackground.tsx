@@ -4,8 +4,8 @@ import { vw } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 
 // Fotka v pozadí stránky: 31 % krytí, režim multiply na zeleném pozadí.
-// Výchozí fotka je interiér (HP); Restaurace a Pivovar si předávají vlastní fotku (src) – zatím
-// stejnou, jakou mají v úvodním bloku jako ostrou prezentační.
+// Výchozí fotka (HP) je fotka pivovaru; Restaurace a Pivovar si předávají vlastní fotku (src) –
+// zatím stejnou, jakou mají v úvodním bloku jako ostrou prezentační.
 // Přes fotku leží ještě poloprůhledná vrstva tmavší zelené (OVERLAY_OPACITY), která pozadí
 // ztmaví a fotku utlumí – sílu ztmavení řídí jen tato konstanta.
 // Výchozí výška = celý rodič (obsah stránky). Pivovar používá jen horní část dle návrhu:
@@ -16,7 +16,7 @@ interface HeroBackgroundProps {
   src?: string
 }
 
-const DEFAULT_SRC = '/images/hero_background.webp'
+const DEFAULT_SRC = '/images/pivovar_photo.webp'
 
 // Krytí tmavě zelené vrstvy přes fotku (0 = bez ztmavení, vyšší = tmavší pozadí)
 const OVERLAY_OPACITY = 0.3
