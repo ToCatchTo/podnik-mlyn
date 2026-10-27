@@ -22,8 +22,8 @@ interface ArrowLinkProps {
 
 // Rozměry šipek dle návrhu: vpravo 21×17 → 35×27, dolů 17×21 → 27,5×35
 const icon = {
-  right: { src: '/icons/arrow_right.svg', width: fluid(21, 35) },
-  down: { src: '/icons/arrow_down.svg', width: fluid(16.5, 27.5) },
+  right: { src: '/static-icons/arrow_right.svg', width: fluid(21, 35) },
+  down: { src: '/static-icons/arrow_down.svg', width: fluid(16.5, 27.5) },
 } as const
 
 export default function ArrowLink({ label, to, direction = 'right', external = false, smallGap, textSx, onClick }: ArrowLinkProps) {

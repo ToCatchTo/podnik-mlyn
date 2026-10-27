@@ -51,7 +51,7 @@ export default function MenuOverlay({ open, onClose }: MenuOverlayProps) {
   // Zavírací křížek 50 × 50 (ikona z návrhu)
   const closeButton = (
     <ButtonBase onClick={onClose} aria-label={content.nav.closeMenu} sx={{ ...hoverDarken(), width: 50, height: 50 }}>
-      <Box component="img" src="/icons/close.svg" alt="" sx={{ width: 50, height: 50 }} />
+      <Box component="img" src="/static-icons/close.svg" alt="" sx={{ width: 50, height: 50 }} />
     </ButtonBase>
   )
 

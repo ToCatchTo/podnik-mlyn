@@ -20,7 +20,7 @@ npm run preview # náhled produkčního buildu
 
 ```
 public/
-  icons/    – ikony (snake_case)
+  static-icons/ – ikony (snake_case)
   images/   – obrázky (snake_case)
   videos/   – videa (snake_case)
 src/

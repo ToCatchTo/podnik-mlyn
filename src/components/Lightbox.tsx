@@ -141,7 +141,7 @@ export default function Lightbox({ title, html, version }: LightboxProps) {
             mb: { xs: '34px', md: 0 },
           }}
         >
-          <Box component="img" src="/icons/close.svg" alt="" sx={{ width: 50, height: 50 }} />
+          <Box component="img" src="/static-icons/close.svg" alt="" sx={{ width: 50, height: 50 }} />
         </ButtonBase>
       </Box>
     </Box>
