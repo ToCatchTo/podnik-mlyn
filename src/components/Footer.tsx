@@ -34,7 +34,7 @@ export default function Footer() {
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: fluid(8, 12) }}>
-        <Box component="img" src="/icons/footer_copyright.svg" alt="©" sx={{ width: 20, height: 20 }} />
+        <Box component="img" src="/static-icons/footer_copyright.svg" alt="©" sx={{ width: 20, height: 20 }} />
         <Typography component="span" sx={text.footerCopy}>
           {copyright}
         </Typography>
@@ -47,10 +47,10 @@ export default function Footer() {
         rel="noreferrer"
         sx={{ ...hoverDarken(), display: 'flex', alignItems: 'center', gap: '10px' }}
       >
-        <Box component="img" src="/icons/footer_matfix_logo.svg" alt={content.footer.matfixAlt} sx={{ width: 58, height: 15 }} />
+        <Box component="img" src="/static-icons/footer_matfix_logo.svg" alt={content.footer.matfixAlt} sx={{ width: 58, height: 15 }} />
         <Box
           component="img"
-          src="/icons/footer_matfix_link.svg"
+          src="/static-icons/footer_matfix_link.svg"
           alt=""
           aria-hidden
           sx={{ display: { xs: 'none', md: 'block' }, width: 20, height: 20 }}

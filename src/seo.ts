@@ -65,7 +65,7 @@ export const localBusinessJsonLd = (): Record<string, unknown> => ({
   name: LOCAL_BUSINESS.name,
   legalName: LOCAL_BUSINESS.legalName,
   url: SITE_ORIGIN,
-  logo: `${SITE_ORIGIN}/icons/apple_touch_icon.png`,
+  logo: `${SITE_ORIGIN}/static-icons/apple_touch_icon.png`,
   image: `${SITE_ORIGIN}${DEFAULT_OG_IMAGE}`,
   telephone: content.kontakt.reservation.phone,
   email: content.kontakt.reservation.email,
