@@ -34,7 +34,6 @@ pnpm-debug.log*
 docs
 superpowers
 DOC.md
-API.md
 
 # Testy
 **/*.test.*
