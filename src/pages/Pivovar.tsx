@@ -30,7 +30,9 @@ export default function Pivovar() {
   return (
     <Box sx={{ position: 'relative', flex: 1 }}>
       <Seo path="/pivovar" title={SEO['/pivovar'].title} description={SEO['/pivovar'].description} />
-      <HeroBackground variant="top" src={PHOTO_SRC} />
+      {/* Bez karet končí stránka úvodním blokem – pozadí jen na výšku obsahu ('full'), jinak by
+          pevná výška varianty 'top' přečnívala pod patičku a stránka by se scrollovala do prázdna */}
+      <HeroBackground variant={hasBeers ? 'top' : 'full'} src={PHOTO_SRC} />
 
       <IntroSection
         heading={c.heading}
