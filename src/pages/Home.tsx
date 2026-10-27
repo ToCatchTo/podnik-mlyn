@@ -10,10 +10,10 @@ import Seo from '@/components/Seo'
 import JsonLd from '@/components/JsonLd'
 import { text, visuallyHidden } from '@/theme/textStyles'
 import { SEO, localBusinessJsonLd } from '@/seo'
-import { useLightbox } from '@/hooks/useContent'
+import { useSpecialEvent } from '@/hooks/useContent'
 import content from '@/content/content'
 
-// Domovská stránka – hero s velkým logem a odkazy restaurace/pivovar + oznámení (lightbox).
+// Domovská stránka – hero s velkým logem a odkazy restaurace/pivovar + mimořádná událost (lightbox).
 // Desktop: logo vlevo (347/252), odkazy vpravo (1106/527), geometrie proporčně k šířce (vw).
 // Mobil: logo nahoře, odkazy pod ním, pevné hodnoty z návrhu 390. V okně širším než návrh
 // (390–599 px) je blok logo + odkazy vycentrovaný; menu v hlavičce zůstává vpravo.
@@ -29,7 +29,8 @@ const mobilePl = (designPx: number) =>
   `max(${designPx}px, calc(50vw - ${MOBILE_LOGO_WIDTH} / 2 + ${designPx - 35}px))`
 
 export default function Home() {
-  const { data: lightbox } = useLightbox()
+  // Mimořádná událost z API (null = vypnutá / nenačtená)
+  const event = useSpecialEvent()
   return (
     <Box sx={{ position: 'relative', flex: 1, display: 'flex' }}>
       <Seo path="/" description={SEO['/'].description} />
@@ -68,8 +69,8 @@ export default function Home() {
         </Grid>
       </Grid>
 
-      {/* Oznámení jen když je z BE vyplněný text */}
-      {lightbox.text.trim() !== '' && <Lightbox text={lightbox.text} />}
+      {/* Lightbox jen když je v administraci zapnutá událost; o verzi už zavřené si rozhodne sám */}
+      {event && <Lightbox key={event.version} title={event.title} html={event.text} version={event.version} />}
     </Box>
   )
 }

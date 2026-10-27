@@ -1,7 +1,7 @@
-// Centrální soubor se všemi statickými texty aplikace (přesně dle XD návrhu,
-// včetně placeholderů jako "00:00 - 00:00", "Název piva", "12/2026").
+// Centrální soubor se všemi statickými texty aplikace (přesně dle XD návrhu).
 // V komponentách nepoužívej hardcoded texty – vždy je ber odsud.
-// Části označené "z BE" slouží zároveň jako fallback pro hooky v hooks/useContent.ts.
+// Dynamický obsah (lightbox, otevírací doba, menu, piva) přichází z API (hooks/useContent.ts),
+// zde jsou jen jeho popisky.
 
 export const content = {
   brand: {
@@ -16,7 +16,8 @@ export const content = {
     home: 'Domovská stránka',
   },
 
-  // Položky rozbaleného menu (v pořadí dle návrhu). 'lunchMenu' = externí PDF (odkaz z BE)
+  // Položky rozbaleného menu (v pořadí dle návrhu). 'lunchMenu' = soubor poledního menu z API
+  // (zobrazí se jen když je nahraný)
   menu: {
     items: [
       { label: 'polední menu', to: 'lunchMenu' },
@@ -52,11 +53,6 @@ export const content = {
     photoAlt: 'Kuchař při přípravě jídla',
     lunchMenu: 'polední menu',
     permanentMenu: 'stálé menu',
-    // Odkazy na PDF s menu (placeholdery; skutečné adresy přijdou z BE)
-    menuLinks: {
-      lunchMenuUrl: '#',
-      permanentMenuUrl: '#',
-    },
     contactLabel: 'rezervace / pronájem',
     phone: '+420 607 13 12 12',
     email: 'info@mlynachmel.cz',
@@ -69,13 +65,8 @@ export const content = {
     offerLink: 'nabídka piva',
     offerAnchor: 'nabidka',
     currency: 'Kč',
-    // 6 karet s pivem (placeholder obsah dle návrhu; skutečná data z BE)
-    beers: Array.from({ length: 6 }, () => ({
-      name: 'Název piva',
-      description: 'Krátká charakteristika piva na pár řádků. Krátká charakteristika piva na pár řádků.',
-      price: '99',
-      volume: '0,5l',
-    })),
+    // Náhradní obrázek karty, když pivo nemá vlastní fotku
+    beerFallbackImage: '/images/beer_bottle.webp',
   },
 
   // Kontakt (heading = vizuálně skrytý h1 pro vyhledávače a čtečky)
@@ -90,10 +81,9 @@ export const content = {
       label: 'adresa',
       lines: ['Tyršovo náměstí 12', '533 04 Sezemice'],
     },
-    // Otevírací doba – placeholder, skutečná data z BE
+    // Otevírací doba – řádky přicházejí z API
     hours: {
       label: 'otevírací doba',
-      lines: ['po-pá 00:00 - 00:00', 'sobota 00:00 - 00:00', 'neděle 00:00 - 00:00'],
     },
     operator: {
       label: 'provozovatel',

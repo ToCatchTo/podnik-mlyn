@@ -12,13 +12,15 @@ import { useBeers } from '@/hooks/useContent'
 import content from '@/content/content'
 
 // Stránka Pivovar – úvodní blok s fotkou a odkaz "nabídka piva", pod ním mřížka karet s pivem
-// (mobil 2 sloupce, desktop 3 sloupce). Karty se načítají z BE (fallback content.ts).
+// (mobil 2 sloupce, desktop 3 sloupce). Karty přicházejí z API; dokud žádné nejsou (nenačtené,
+// prázdný seznam, chyba), odkaz ani sekce s nabídkou se nevykreslí.
 // Fotka stránky – zatím stejná v pozadí i jako ostrá v úvodním bloku
 const PHOTO_SRC = '/images/pivovar_photo.webp'
 
 export default function Pivovar() {
   const c = content.pivovar
-  const { data: beers } = useBeers()
+  const beers = useBeers()
+  const hasBeers = beers.length > 0
 
   // Plynulé odscrollování na nabídku piva
   const scrollToOffer = () => {
@@ -35,13 +37,15 @@ export default function Pivovar() {
         photoSrc={PHOTO_SRC}
         photoAlt={c.photoAlt}
         links={
-          <ArrowLink
-            label={c.offerLink}
-            to={`#${c.offerAnchor}`}
-            direction="down"
-            textSx={text.subLink}
-            onClick={scrollToOffer}
-          />
+          hasBeers && (
+            <ArrowLink
+              label={c.offerLink}
+              to={`#${c.offerAnchor}`}
+              direction="down"
+              textSx={text.subLink}
+              onClick={scrollToOffer}
+            />
+          )
         }
       />
 
@@ -49,36 +53,44 @@ export default function Pivovar() {
           v bloku max. 600 px na střed (stejně jako úvodní text), desktop mezera 85 proporčně.
           Výjimka z MUI Grid: CSS grid s gridAutoRows 1fr srovná výšku všech karet podle nejvyšší
           (text z BE může být různě dlouhý). */}
-      <Box
-        id={c.offerAnchor}
-        sx={{
-          position: 'relative',
-          zIndex: 1,
-          px: { xs: '37px', md: '36px', wide: vw(278) },
-          pt: { xs: '147px', md: '100px', wide: vw(70) },
-          pb: { xs: '218px', md: '140px', wide: vw(128) },
-        }}
-      >
-        {/* Vizuálně skrytý h2, aby názvy piv (h3) nenavazovaly přímo na h1 */}
-        <Box component="h2" sx={visuallyHidden}>
-          {c.offerLink}
-        </Box>
+      {hasBeers && (
         <Box
+          id={c.offerAnchor}
           sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-            gridAutoRows: '1fr',
-            columnGap: { xs: '11px', md: '24px', wide: vw(85) },
-            rowGap: { xs: '50px', wide: vw(55) },
-            maxWidth: { xs: 'none', md: '600px', wide: 'none' },
-            mx: { md: 'auto', wide: 0 },
+            position: 'relative',
+            zIndex: 1,
+            px: { xs: '37px', md: '36px', wide: vw(278) },
+            pt: { xs: '147px', md: '100px', wide: vw(70) },
+            pb: { xs: '218px', md: '140px', wide: vw(128) },
           }}
         >
-          {beers.map((beer, i) => (
-            <BeerCard key={i} name={beer.name} description={beer.description} priceLabel={priceLabel(beer)} />
-          ))}
+          {/* Vizuálně skrytý h2, aby názvy piv (h3) nenavazovaly přímo na h1 */}
+          <Box component="h2" sx={visuallyHidden}>
+            {c.offerLink}
+          </Box>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+              gridAutoRows: '1fr',
+              columnGap: { xs: '11px', md: '24px', wide: vw(85) },
+              rowGap: { xs: '50px', wide: vw(55) },
+              maxWidth: { xs: 'none', md: '600px', wide: 'none' },
+              mx: { md: 'auto', wide: 0 },
+            }}
+          >
+            {beers.map((beer) => (
+              <BeerCard
+                key={beer.id}
+                name={beer.name}
+                description={beer.text ?? ''}
+                imageSrc={beer.image ?? c.beerFallbackImage}
+                priceLabel={priceLabel(beer)}
+              />
+            ))}
+          </Box>
         </Box>
-      </Box>
+      )}
     </Box>
   )
 }

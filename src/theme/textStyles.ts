@@ -89,13 +89,29 @@ export const text: Record<string, SystemStyleObject<Theme>> = {
     fontSize: fluid(28, 40),
     lineHeight: fluid(34, 48),
   },
-  // Text lightboxu 40/48 → 69/83, zelený, na střed
+  // Titulek lightboxu 40/48 → 69/83, zelený, na střed
   lightboxText: {
     ...base,
     color: colors.green,
     fontSize: fluid(40, 69),
     lineHeight: fluid(48, 83),
     textAlign: 'center',
+  },
+  // Text lightboxu (HTML z administrace) 20/24 → 30/36, zelený, light, na střed
+  lightboxBody: {
+    ...base,
+    fontWeight: 300,
+    color: colors.green,
+    fontSize: fluid(20, 30),
+    lineHeight: fluid(24, 36),
+    textAlign: 'center',
+  },
+  // Drobná poznámka z administrace (pod odkazem na menu, pod otevírací dobou) 14/18 → 18/24, light
+  note: {
+    ...base,
+    fontWeight: 300,
+    fontSize: fluid(14, 18),
+    lineHeight: fluid(18, 24),
   },
   // Copyright v patičce (10px, Inter)
   footerCopy: {

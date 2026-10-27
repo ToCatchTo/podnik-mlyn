@@ -8,32 +8,34 @@ import { text } from '@/theme/textStyles'
 import { hoverDarken } from '@/theme/interactions'
 import content from '@/content/content'
 
-// Oznámení na domovské stránce (text z BE, řádky oddělené \n). Zobrazí se jednou za relaci
-// prohlížeče (stav v sessionStorage), zavírá se křížkem nebo klávesou Escape.
-const STORAGE_KEY = 'lightbox_dismissed'
+// Mimořádná událost na domovské stránce (titulek + HTML text z administrace). Při zavření se do
+// localStorage uloží `version`; lightbox se znovu ukáže, až když přijde jiná verze (nová zpráva,
+// nebo ji obsluha vypnula a zapnula). Zavírá se křížkem nebo klávesou Escape.
+const STORAGE_KEY = 'specialEventDismissed'
 
 interface LightboxProps {
-  text: string
+  title: string
+  html: string
+  version: string
 }
 
-function readDismissed(): boolean {
+function readDismissedVersion(): string | null {
   try {
-    return sessionStorage.getItem(STORAGE_KEY) === '1'
+    return localStorage.getItem(STORAGE_KEY)
   } catch {
-    return false
+    return null
   }
 }
 
-export default function Lightbox({ text: message }: LightboxProps) {
-  const [open, setOpen] = useState(() => !readDismissed())
-  const lines = message.split('\n').filter((line) => line.trim() !== '')
+export default function Lightbox({ title, html, version }: LightboxProps) {
+  const [open, setOpen] = useState(() => readDismissedVersion() !== version)
 
   const close = () => {
     setOpen(false)
     try {
-      sessionStorage.setItem(STORAGE_KEY, '1')
+      localStorage.setItem(STORAGE_KEY, version)
     } catch {
-      // sessionStorage nemusí být dostupné (soukromý režim) – oznámení se jen zavře
+      // localStorage nemusí být dostupné (soukromý režim) – oznámení se jen zavře
     }
   }
 
@@ -65,30 +67,62 @@ export default function Lightbox({ text: message }: LightboxProps) {
       }}
     >
       {/* Krémový box: mobil 328 × 508, desktop 1120 × 620 proporčně k šířce okna, s minimem
-          540 × 320 (text na dva řádky + křížek), nikdy širší než okno − 62. Krytí 95 % */}
+          540 × 320, nikdy širší než okno − 62. Výška je minimum – delší text box natáhne, nejvýš
+          však na výšku okna (pak se text uvnitř scrolluje). Krytí 95 % */}
       <Box
         role="dialog"
-        aria-label={lines.join(' ')}
+        aria-labelledby="special-event-title"
         sx={{
           position: 'relative',
           pointerEvents: 'auto',
           width: { xs: 'calc(100% - 62px)', md: `min(max(540px, ${vw(1120)}), calc(100% - 62px))` },
-          height: { xs: '508px', md: `max(320px, ${vw(620)})` },
+          minHeight: { xs: 'min(508px, calc(100dvh - 233px))', md: `min(max(320px, ${vw(620)}), calc(100dvh - 120px))` },
+          maxHeight: { xs: 'calc(100dvh - 233px)', md: 'calc(100dvh - 120px)' },
           bgcolor: colors.cream,
           opacity: 0.95,
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          px: fluid(26, 40),
+          flexDirection: 'column',
         }}
       >
-        <Typography component="p" sx={text.lightboxText}>
-          {lines.map((line, i) => (
-            <Box component="span" key={i} sx={{ display: 'block' }}>
-              {line}
-            </Box>
-          ))}
-        </Typography>
+        {/* Scrollovatelný obsah; při kratším textu vycentrovaný (margin auto) */}
+        <Box
+          sx={{
+            flex: 1,
+            minHeight: 0,
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            px: { xs: fluid(26, 40), md: `max(${fluid(26, 40)}, ${vw(130)})` },
+            pt: { xs: '60px', md: `max(60px, ${vw(80)})` },
+            // Mobil: pod textem je v toku křížek, desktop: křížek je absolutně v rohu
+            pb: { xs: '20px', md: `max(60px, ${vw(80)})` },
+          }}
+        >
+          <Box sx={{ my: 'auto' }}>
+            <Typography id="special-event-title" component="h2" sx={text.lightboxText}>
+              {title}
+            </Typography>
+            {/* HTML z editoru v administraci (odstavce, tučné, odkazy). Zdroj je vlastní
+                důvěryhodná administrace, proto se nesanitizuje. */}
+            <Box
+              sx={{
+                ...text.lightboxBody,
+                mt: fluid(20, 32),
+                '& p': { m: 0 },
+                '& p + p': { mt: fluid(10, 16) },
+                '& strong, & b': { fontWeight: 500 },
+                '& a': {
+                  ...hoverDarken(),
+                  color: 'inherit',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '0.12em',
+                  textDecorationThickness: '0.05em',
+                },
+              }}
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
+          </Box>
+        </Box>
 
         {/* Křížek: desktop vpravo nahoře (60 / 55 px proporčně, min. 20 px), mobil dole na střed
             (34 px od spodku) */}
@@ -97,13 +131,14 @@ export default function Lightbox({ text: message }: LightboxProps) {
           aria-label={content.lightbox.close}
           sx={{
             ...hoverDarken(),
-            position: 'absolute',
+            position: { xs: 'relative', md: 'absolute' },
+            flexShrink: 0,
             width: 50,
             height: 50,
-            top: { xs: 'calc(100% - 84px)', md: `max(20px, ${vw(60)})` },
+            top: { xs: 'auto', md: `max(20px, ${vw(60)})` },
             right: { xs: 'auto', md: `max(20px, ${vw(55)})` },
-            left: { xs: '50%', md: 'auto' },
-            transform: { xs: 'translateX(-50%)', md: 'none' },
+            alignSelf: { xs: 'center', md: 'auto' },
+            mb: { xs: '34px', md: 0 },
           }}
         >
           <Box component="img" src="/icons/close.svg" alt="" sx={{ width: 50, height: 50 }} />

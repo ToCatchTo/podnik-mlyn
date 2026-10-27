@@ -1,32 +1,43 @@
 import { useFetch } from '@/hooks/useFetch'
 import { apiUrl, apiOptions, endpoints } from '@/api/endpoints'
-import type { Beer, LightboxData, MenuLinks, OpeningHours } from '@/api/types'
-import content from '@/content/content'
+import type {
+  Beer,
+  BeersResponse,
+  MenuFile,
+  OpeningHoursResponse,
+  RestaurantMenusResponse,
+  SpecialEvent,
+  SpecialEventResponse,
+} from '@/api/types'
 
-// Hooky pro obsah z backendu. Dokud API není nakonfigurováno, načítá se, nebo selže,
-// vrací placeholder z content.ts – layout tak nikdy neskáče a web nezůstane prázdný.
-interface ContentState<T> {
-  data: T
-  loading: boolean
+// Hooky pro obsah z administrace. API je zdroj pravdy: dokud se data načítají nebo když API
+// selže (401, 404, výpadek), hooky vrací „nic“ (null / prázdný seznam) a stránky příslušnou část
+// nevykreslí. Žádné placeholdery. Odpovědi se cachují po dobu života stránky (viz useFetch).
+const options = { ...apiOptions, shared: true }
+
+function useApi<T>(path: string): T | null {
+  const { data } = useFetch<T>(apiUrl(path), options)
+  return data
 }
 
-function useContent<T>(path: string, fallback: T): ContentState<T> {
-  const { data, loading } = useFetch<T>(apiUrl(path), apiOptions)
-  return { data: data ?? fallback, loading }
+// Mimořádná událost pro lightbox na HP (null = vypnutá / nenačtená)
+export function useSpecialEvent(): SpecialEvent | null {
+  return useApi<SpecialEventResponse>(endpoints.specialEvent)?.item ?? null
 }
 
-export function useLightbox(): ContentState<LightboxData> {
-  return useContent<LightboxData>(endpoints.lightbox, { text: content.lightbox.text })
+// Otevírací doba (null = není nastavená / nenačtená)
+export function useOpeningHours(): OpeningHoursResponse | null {
+  const data = useApi<OpeningHoursResponse>(endpoints.openingHours)
+  return data && data.items.length > 0 ? data : null
 }
 
-export function useOpeningHours(): ContentState<OpeningHours> {
-  return useContent<OpeningHours>(endpoints.openingHours, { lines: [...content.kontakt.hours.lines] })
+// Soubory menu – slot bez souboru je null
+export function useRestaurantMenus(): { lunch: MenuFile | null; permanent: MenuFile | null } {
+  const data = useApi<RestaurantMenusResponse>(endpoints.restaurantMenus)
+  return { lunch: data?.lunch ?? null, permanent: data?.permanent ?? null }
 }
 
-export function useBeers(): ContentState<Beer[]> {
-  return useContent<Beer[]>(endpoints.beers, [...content.pivovar.beers])
-}
-
-export function useMenuLinks(): ContentState<MenuLinks> {
-  return useContent<MenuLinks>(endpoints.menuLinks, { ...content.restaurace.menuLinks })
+// Pivní karty v pořadí z administrace ([] = žádné / nenačtené)
+export function useBeers(): Beer[] {
+  return useApi<BeersResponse>(endpoints.beers)?.items ?? []
 }

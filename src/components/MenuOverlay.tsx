@@ -8,7 +8,7 @@ import { fluid, vw } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 import { text } from '@/theme/textStyles'
 import { hoverDarken } from '@/theme/interactions'
-import { useMenuLinks } from '@/hooks/useContent'
+import { useRestaurantMenus } from '@/hooks/useContent'
 import content from '@/content/content'
 
 // Rozbalené menu. Desktop: krémový panel vpravo (830 px z 1920, přes celou výšku vč. patičky).
@@ -22,33 +22,29 @@ export default function MenuOverlay({ open, onClose }: MenuOverlayProps) {
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
-  // Odkaz na polední menu (PDF z BE)
-  const { data: menuLinks } = useMenuLinks()
+  // Soubor poledního menu z API (null = nenahrané → položka se v menu nezobrazí)
+  const { lunch } = useRestaurantMenus()
 
-  // Seznam položek menu (sdílený pro obě varianty); 'lunchMenu' je externí PDF v novém okně
+  // Seznam položek menu (sdílený pro obě varianty); 'lunchMenu' je soubor z API v novém okně
   const itemSx = { ...text.menuItem, ...hoverDarken(), justifyContent: 'flex-start', cursor: 'pointer', width: 'fit-content' }
   const items = (
     <Stack sx={{ gap: fluid(13, 15) }}>
-      {content.menu.items.map((item, i) =>
-        item.to === 'lunchMenu' ? (
-          <ButtonBase
-            key={`${item.label}-${i}`}
-            component="a"
-            href={menuLinks.lunchMenuUrl}
-            target="_blank"
-            rel="noreferrer"
-            onClick={onClose}
-            disableRipple
-            sx={itemSx}
-          >
+      {content.menu.items.map((item, i) => {
+        const key = `${item.label}-${i}`
+        if (item.to === 'lunchMenu') {
+          if (!lunch) return null
+          return (
+            <ButtonBase key={key} component="a" href={lunch.url} target="_blank" rel="noreferrer" onClick={onClose} disableRipple sx={itemSx}>
+              {item.label}
+            </ButtonBase>
+          )
+        }
+        return (
+          <ButtonBase key={key} component={Link} to={item.to} onClick={onClose} disableRipple sx={itemSx}>
             {item.label}
           </ButtonBase>
-        ) : (
-          <ButtonBase key={`${item.label}-${i}`} component={Link} to={item.to} onClick={onClose} disableRipple sx={itemSx}>
-            {item.label}
-          </ButtonBase>
-        ),
-      )}
+        )
+      })}
     </Stack>
   )
 

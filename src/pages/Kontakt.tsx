@@ -41,8 +41,8 @@ const mobilePl = `max(${MOBILE_PL}px, calc(50vw - ${MOBILE_BLOCK_WIDTH / 2}px))`
 
 export default function Kontakt() {
   const c = content.kontakt
-  // Otevírací doba z BE (fallback content.ts)
-  const { data: hours } = useOpeningHours()
+  // Otevírací doba z API (null = není nastavená / nenačtená → skupina se nevykreslí)
+  const hours = useOpeningHours()
   return (
     <Box sx={{ position: 'relative', flex: 1, overflow: 'hidden' }}>
       <Seo path="/kontakt" title={SEO['/kontakt'].title} description={SEO['/kontakt'].description} />
@@ -92,9 +92,12 @@ export default function Kontakt() {
           <Grid size={{ xs: 12, wide: 6 }}>
             <ContactGroup label={c.address.label} lines={c.address.lines} />
           </Grid>
-          <Grid size={{ xs: 12, wide: 6 }}>
-            <ContactGroup label={c.hours.label} lines={hours.lines} />
-          </Grid>
+          {hours && (
+            <Grid size={{ xs: 12, wide: 6 }}>
+              {/* Řádky popisek | hodnota tak, jak je zadala obsluha; poznámka drobně pod nimi */}
+              <ContactGroup label={c.hours.label} lines={hours.items} note={hours.note} />
+            </Grid>
+          )}
           <Grid size={{ xs: 12, wide: 6 }}>
             <ContactGroup label={c.operator.label} lines={c.operator.lines} variant="small" />
           </Grid>

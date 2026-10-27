@@ -4,16 +4,19 @@ import { fluid } from '@/utils/fluid'
 import { colors } from '@/theme/tokens'
 import { text } from '@/theme/textStyles'
 
-// Karta jednoho piva – zaoblený zelený box s obrázkem lahve, názvem, popisem a cenou.
+// Karta jednoho piva – zaoblený zelený box s fotkou, názvem, popisem a cenou.
 // Rozměry a odsazení fluidně dle návrhu (mobil 153×309 → desktop 398×680).
 // Popis roste (flexGrow), takže cena sedí u spodního okraje stejně ve všech kartách.
 interface BeerCardProps {
   name: string
+  // Prostý text z administrace, zalomení řádků \n (pre-line)
   description: string
+  // Fotka piva z administrace, nebo náhradní obrázek
+  imageSrc: string
   priceLabel: string
 }
 
-export default function BeerCard({ name, description, priceLabel }: BeerCardProps) {
+export default function BeerCard({ name, description, imageSrc, priceLabel }: BeerCardProps) {
   return (
     <Box
       sx={{
@@ -28,10 +31,10 @@ export default function BeerCard({ name, description, priceLabel }: BeerCardProp
         height: '100%',
       }}
     >
-      {/* Obrázek lahve (placeholder), poměr stran dle návrhu 315/410 */}
+      {/* Fotka piva, poměr stran dle návrhu 315/410 (oříznutí na střed) */}
       <Box
         component="img"
-        src="/images/beer_bottle.webp"
+        src={imageSrc}
         alt={name}
         loading="lazy"
         decoding="async"
