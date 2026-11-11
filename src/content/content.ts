@@ -45,7 +45,7 @@ export const content = {
 
   // Společný úvodní odstavec (restaurace i pivovar)
   intro:
-    'V historickém mlýně v Sezemicích jsme dali vzniknout místu, kde se snoubí vůně čerstvě uvařeného piva s vůní domácí kuchyně. Mlýn a chmel je řemeslný pivovar i restaurace v jednom – prostě hospoda, na kterou se nezapomíná. Každý šálek piva prochází rukama našich sládků, každý talíř vzniká ze surovin, kterým věříme. Vítejte u nás.',
+    'V Sezemickém mlýně jsme dali vzniknout místu, kde se snoubí vůně čerstvě uvařeného piva s vůní domácí kuchyně. Náš řemeslný pivovar a restaurace je místem, na které se nezapomíná. Našemu pivu nic nebereme filtrací ani pasterizací. Je to pivo bez kompromisů ze surovin, které nám příroda už léta dává k jeho výrobě. Výsledná chuť je dána poměrem těchto surovin, které s láskou míchá náš sládek. Vážení hosté, přejeme Vám dobrou chuť, na zdraví a buďte vítáni.',
 
   // Restaurace
   restaurace: {
