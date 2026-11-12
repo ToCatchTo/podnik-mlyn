@@ -40,6 +40,7 @@ export default function Restaurace() {
 
       <IntroSection
         heading={c.heading}
+        intro={c.intro}
         photoSrc={PHOTO_SRC}
         photoAlt={c.photoAlt}
         // Odkazy na menu (nové okno); na desktopu vždy na první obrazovce.

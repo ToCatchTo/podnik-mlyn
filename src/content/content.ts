@@ -43,13 +43,11 @@ export const content = {
     close: 'Zavřít oznámení',
   },
 
-  // Společný úvodní odstavec (restaurace i pivovar)
-  intro:
-    'V historickém mlýně v Sezemicích jsme dali vzniknout místu, kde se snoubí vůně čerstvě uvařeného piva s vůní domácí kuchyně. Mlýn a chmel je řemeslný pivovar i restaurace v jednom – prostě hospoda, na kterou se nezapomíná. Každý šálek piva prochází rukama našich sládků, každý talíř vzniká ze surovin, kterým věříme. Vítejte u nás.',
-
   // Restaurace
   restaurace: {
     heading: 'restaurace',
+    intro:
+      'V Sezemickém mlýně jsme dali vzniknout místu, kde se snoubí vůně poctivé české kuchyně s příjemnou atmosférou a pohostinností. Naše restaurace staví na tradičních českých receptech, kvalitních surovinách a poctivé přípravě. Věříme, že dobré jídlo nepotřebuje zbytečné složitosti, ale čas, péči a kuchaře, který svou práci dělá srdcem. Chceme, abyste si u nás vychutnali nejen dobré jídlo, ale také chvíle strávené s rodinou, přáteli a těmi, na kterých vám záleží. Vážení hosté, přejeme Vám dobrou chuť a buďte vítáni.',
     photoAlt: 'Kuchař při přípravě jídla',
     lunchMenu: 'polední menu',
     permanentMenu: 'stálé menu',
@@ -61,6 +59,8 @@ export const content = {
   // Pivovar
   pivovar: {
     heading: 'řemeslný pivovar',
+    intro:
+      'V Sezemickém mlýně jsme dali vzniknout místu, kde se snoubí vůně čerstvě uvařeného piva s vůní domácí kuchyně. Náš řemeslný pivovar a restaurace je místem, na které se nezapomíná. Našemu pivu nic nebereme filtrací ani pasterizací. Je to pivo bez kompromisů ze surovin, které nám příroda už léta dává k jeho výrobě. Výsledná chuť je dána poměrem těchto surovin, které s láskou míchá náš sládek. Vážení hosté, přejeme Vám dobrou chuť, na zdraví a buďte vítáni.',
     photoAlt: 'Měděné varní kotle pivovaru',
     offerLink: 'nabídka piva',
     offerAnchor: 'nabidka',

@@ -7,7 +7,6 @@ import Logo from '@/components/Logo'
 import WaveDecor from '@/components/WaveDecor'
 import { fluid, vw, fitHeight } from '@/utils/fluid'
 import { text } from '@/theme/textStyles'
-import content from '@/content/content'
 
 // Horní blok stránek Restaurace a Pivovar: vlevo logo, nadpis, úvod a odkazy (children),
 // vpravo fotka (desktop vždy na celou výšku okna). Když je obsah pod sebou (mobil, hybrid),
@@ -32,6 +31,8 @@ const FOLD_RESERVE = 40
 
 interface IntroSectionProps {
   heading: string
+  // Úvodní odstavec pod nadpisem
+  intro: string
   photoSrc: string
   photoAlt: string
   // Odkazy pod úvodem (menu / nabídka piva) – na desktopu vždy na první obrazovce;
@@ -66,7 +67,7 @@ function Gap({ xs, md, wide, wideMin = wide }: GapProps) {
   )
 }
 
-export default function IntroSection({ heading, photoSrc, photoAlt, links, children }: IntroSectionProps) {
+export default function IntroSection({ heading, intro, photoSrc, photoAlt, links, children }: IntroSectionProps) {
   // Pojistka pro velmi nízké okno: když se první obrazovka nevejde ani s mezerami na minimu,
   // obsah z bloku (max. výška okna) přeteče. Obal proto dostane min. výšku podle skutečné výšky
   // obsahu, aby přetečený obsah nepřekryl to, co následuje pod ním.
@@ -113,7 +114,7 @@ export default function IntroSection({ heading, photoSrc, photoAlt, links, child
 
               <Gap xs="29px" wide={29} wideMin={16} />
               <Typography sx={{ ...text.intro, flexShrink: 0, maxWidth: { xs: '318px', md: 'none', wide: fluid(318, 765) } }}>
-                {content.intro}
+                {intro}
               </Typography>
 
               {/* Odkazy jsou vždy hned pod úvodem, tedy i na mobilu a v hybridu před fotkou:
