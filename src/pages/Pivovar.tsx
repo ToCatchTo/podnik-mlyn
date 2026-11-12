@@ -36,6 +36,7 @@ export default function Pivovar() {
 
       <IntroSection
         heading={c.heading}
+        intro={c.intro}
         photoSrc={PHOTO_SRC}
         photoAlt={c.photoAlt}
         links={
